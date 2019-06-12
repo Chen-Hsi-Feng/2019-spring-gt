@@ -894,6 +894,7 @@ stdout = fopen("RESULT.txt", "w");  // write file
 
 	cout << "a" << " ";
 	fprintf(stdout,"a");
+	fprintf(stdout," ");
 
 char result[100];
 
@@ -903,6 +904,7 @@ char result[100];
 	//cout << result[i] << " ";
 	cout << outpath[i] << " ";
 	fprintf(stdout, outpath[i].c_str());
+	fprintf(stdout," ");
 	//fgetc(stdin);   //pause
 }
 
