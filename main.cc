@@ -25,7 +25,99 @@ void Print_road(int*, int, int*, int);
 vector<string> outpath;
 int ok;
 
+void Dijkstra(int adj[n][n], int _n, int s, int d, int path[]) 
+{ 
+	int c = minus_1;
+	int i, u, v, count; 
+	int distance[n]; 
+	int Blackened[n] = {0}; 
+	int pathlength[n] = {0}; 
+	int parent[n]; 
 
+	
+	parent[s] = minus_1; 
+
+	
+	for (i = 0; i < n; i++) 
+		distance[i] = INFINITY; 
+
+	distance[s] = 0; 
+	for (count = 0; count < n - 1; count++) { 
+		u = Min_d(distance, Blackened); 
+
+		if (u == INFINITY) 
+			break; 
+		else { 
+
+		
+			Blackened[u] = 1; 
+			for (v = 0; v < n; v++) { 
+				if (Blackened[v] == 0 && adj[u][v] && distance[u] + adj[u][v] < distance[v]) 
+				{ 
+					parent[v] = u; 
+					pathlength[v] = pathlength[parent[v]] + 1; 
+					distance[v] = distance[u] + adj[u][v]; 
+				} 
+				else if (Blackened[v]  == 0 && adj[u][v] && distance[u] + adj[u][v] == distance[v] && pathlength[u] + 1 < pathlength[v]) 
+				{ 
+					parent[v] = u; 
+					pathlength[v] = pathlength[u] + 1; 
+				} 
+			} 
+		} 
+	} 
+
+	
+	if (distance[d] != INFINITY) 
+		Print_road(parent, d, path, c); 
+	else
+		cout << "no path from"
+			<< s << "to" << d; 
+			
+			
+			
+	//cout << " Dij's c :" << c;		
+			
+} 
+
+int Min_d(int distance[], int Blackened[]) 
+{ 
+	int min = INFINITY, min_index, v; 
+	for (v = 0; v < n; v++) 
+		if (Blackened[v] == 0 && distance[v] < min) { 
+			min = distance[v]; 
+			min_index = v; 
+		} 
+	
+	if (min == INFINITY)
+	min = INFINITY;
+	else
+	min = min_index;
+	
+	return min;
+} 
+
+
+void Print_road(int parent[], int d, int path[], int c) 
+{ 
+	if (parent[d] == minus_1) { 
+		cout << d; 
+		return; 
+	} 
+	c++;
+	Print_road(parent, parent[d], path, c); 
+	
+	cout << "=>" << d; 
+	//cout << endl;
+	path[c] = d;
+	//cout << "before : " ;
+	//cout << c << " " << path[c] << " ";
+	
+	//c++;
+	//length++;
+	//cout << "after : " ;
+	//cout << c << " " << path[c] << " ";
+} 
 
 
 void DFS (int s, int len, int visit[], int adj[][10], string names[], int size)
