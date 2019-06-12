@@ -7,6 +7,8 @@
 #include "gplot.h"
 #include "path.h"
 #include <stdlib.h>
+#include <queue>
+#include <vector>
 
 using namespace std;
 
@@ -22,7 +24,8 @@ NetworkManager *nm = new NetworkManager();
 #define NILL -1 
 int MinDistance(int*, int*); 
 void PrintPath(int*, int, int*, int); 
-
+vector<string> outpath;
+int ok;
 // Function to find the shortest path 
 // with minimum edges in a graph 
 void Dijkstra(int Graph[n][n], int _n, int _s, int _d, int path[]) 
@@ -164,12 +167,53 @@ int main()
 	return 0; 
 } 
 */
+void DFS (int s, int l, int visit[], int adj[][10], string names[], int size)
+{
+	ok = 0;
+	visit[s] = visit[s] - 1 ;
+	for(int i = 0; i < size; i++)
+	{
+		if (adj[s][i] != 0 && visit[i] != 0)
+		{
+			adj[s][i]--;
+			adj[i][s]--;
+			
+			outpath.push_back(names[i]);
+
+			for (int k = 0; k < outpath.size(); k++)
+			cout << outpath[k] << " " ;
+			//fgetc(stdin);   //pause
+			cout << endl;
+
+			l--;
+			
+			if (l > 0)
+			{
+				DFS(i, l, visit, adj, names, size);
+				
+			}
+			else if (i == 0)
+			{
+				ok = 1;
+				return;
+			}
+			
+			if (ok == 1)  return;
+			
+			l++;
+			visit[i]++;
+			outpath.pop_back();
+			adj[s][i]++;
+			adj[i][s]++;
+		}	
+	}
+}
 
 
 int main(int argc, char** argv){
 
     /* start your program */
-    nm->interpret("./topo_4points.txt");
+    nm->interpret("./topo.txt");
 //    nm->print_all_e();
 //    nm->print_all_v();
     Vertex *list =  nm->get_all_nodes();
@@ -177,6 +221,7 @@ int main(int argc, char** argv){
 
 int size = 0;
 string names[10];
+int names_vector[10];
 
     while(list!=NULL){
         //std::cout << list->name << std::endl;
@@ -300,10 +345,13 @@ int record_points[odd_num];
 }
 
 int test = 0;
-    if (odd_num == 2)
+    if (odd_num == 0)
+    test = 0;
+    else if (odd_num == 2)
     test = 1;
     else if (odd_num == 4)
     test = 3;
+
 int cnt = 0;
 int length_true = 0;
 //int path[10];
@@ -311,6 +359,7 @@ int start = 99;
 int endline = 99;
 int min_length_array[10] = {99, 99, 99, 99, 99, 99, 99, 99, 99, 99};
 int path[10] = {99, 99, 99, 99, 99, 99, 99, 99, 99, 99};
+
 while (test != 0)
 {
     for (int i = 0; i < 10; i++)
@@ -449,7 +498,7 @@ while (test != 0)
 	cout << "start2 : " << start2 <<endl;
 	cout << "endline2 : " << endline2 <<endl;
 
-fgetc(stdin);   //pause
+//fgetc(stdin);   //pause
 
     if (odd_num == 4)
     {
@@ -543,6 +592,333 @@ cout << endl;
 }
 	
 }
+
+else if (odd_num == 6)
+{
+int times = 3;
+	while (times != 0)
+	{
+
+    for (int i = 0; i < 10; i++)
+    path[i] = 99;
+
+    length_true = 0;
+
+	if (times == 3)
+	{
+	start = odd[0];
+	endline = odd[5];
+}
+
+	else if (times == 2)
+	{
+	start = odd[1];
+	endline = odd[4];
+}
+
+	else if (times == 1)
+	{
+	start = odd[2];
+	endline = odd[3];
+}
+
+	Dijkstra(adj, n, start, endline, path); 
+	
+	cout << endl;
+	cout << "path : ";
+	
+	for (int i = 0; i < n; i++)
+	{
+   	    if (path[i] != 99)
+	    length_true++;
+				
+}
+	
+	
+	path[length_true] = start;
+	
+	for (int i = 0; i < n; i++)
+	{
+		cout << path[i] << " ";
+				
+}
+	cout << "length : " << length_true << endl;
+
+
+	for (int i =  0; i < length_true; i++)  // update adj matrix
+    {
+	adj[path[i]][path[i+1]]++;
+	adj[path[i+1]][path[i]]++;
+	
+}
+
+cout << endl;
+
+    cout << "adj matrix update : " << endl;    // adj. matrix
+    for(int i = 0; i < 10; i++)    
+    {
+	for(int j = 0; j < 10; j++)
+	{
+	cout << adj[i][j] << " ";
+}
+	cout << endl;
+}
+	times--;
+}   // end while
+}    // end if 
+
+else if (odd_num == 8)
+{
+int times = 4;
+	while (times != 0)
+	{
+
+    for (int i = 0; i < 10; i++)
+    path[i] = 99;
+
+    length_true = 0;
+
+	if (times == 4)
+	{
+	start = odd[0];
+	endline = odd[7];
+}
+
+	else if (times == 3)
+	{
+	start = odd[1];
+	endline = odd[6];
+}
+
+	else if (times == 2)
+	{
+	start = odd[2];
+	endline = odd[5];
+}
+
+	else if (times == 1)
+	{
+	start = odd[3];
+	endline = odd[4];
+}
+
+	Dijkstra(adj, n, start, endline, path); 
+	
+	cout << endl;
+	cout << "path : ";
+	
+	for (int i = 0; i < n; i++)
+	{
+   	    if (path[i] != 99)
+	    length_true++;
+				
+}
+	
+	
+	path[length_true] = start;
+	
+	for (int i = 0; i < n; i++)
+	{
+		cout << path[i] << " ";
+				
+}
+	cout << "length : " << length_true << endl;
+
+
+	for (int i =  0; i < length_true; i++)  // update adj matrix
+    {
+	adj[path[i]][path[i+1]]++;
+	adj[path[i+1]][path[i]]++;
+	
+}
+
+cout << endl;
+
+    cout << "adj matrix update : " << endl;    // adj. matrix
+    for(int i = 0; i < 10; i++)    
+    {
+	for(int j = 0; j < 10; j++)
+	{
+	cout << adj[i][j] << " ";
+}
+	cout << endl;
+}
+	times--;
+}   // end while
+}    // end if 
+
+else if (odd_num == 10)
+{
+int times = 5;
+	while (times != 0)
+	{
+
+    for (int i = 0; i < 10; i++)
+    path[i] = 99;
+
+    length_true = 0;
+
+	if (times == 5)
+	{
+	start = odd[0];
+	endline = odd[9];
+}
+
+	else if (times == 4)
+	{
+	start = odd[1];
+	endline = odd[8];
+}
+
+	else if (times == 3)
+	{
+	start = odd[2];
+	endline = odd[7];
+}
+
+	else if (times == 2)
+	{
+	start = odd[3];
+	endline = odd[6];
+}
+
+	else if (times == 1)
+	{
+	start = odd[4];
+	endline = odd[5];
+}
+
+	Dijkstra(adj, n, start, endline, path); 
+	
+	cout << endl;
+	cout << "path : ";
+	
+	for (int i = 0; i < n; i++)
+	{
+   	    if (path[i] != 99)
+	    length_true++;
+				
+}
+	
+	
+	path[length_true] = start;
+	
+	for (int i = 0; i < n; i++)
+	{
+		cout << path[i] << " ";
+				
+}
+	cout << "length : " << length_true << endl;
+
+
+	for (int i =  0; i < length_true; i++)  // update adj matrix
+    {
+	adj[path[i]][path[i+1]]++;
+	adj[path[i+1]][path[i]]++;
+	
+}
+
+cout << endl;
+
+int l = 0;
+
+    cout << "adj matrix update : " << endl;    // adj. matrix
+    for(int i = 0; i < 10; i++)    
+    {
+	for(int j = 0; j < 10; j++)
+	{
+	l = l + adj[i][j];
+	
+
+	cout << adj[i][j] << " ";
+}
+	cout << endl;
+}
+	times--;
+}   // end while
+}    // end if 
+
+    int array_dfs[10];
+
+for (int i = 0; i < size; i++)
+    {
+	array_dfs[i] = 0;
+    for (int j = 0; j < size; j++)
+    {
+	
+	array_dfs[i] = array_dfs[i] + adj[i][j];
+	
+}
+	cout << array_dfs[i] <<endl;
+}
+//----------------------------------DFS-----------------------------//
+	
+int visit[10];
+//vector<string> outpath;
+int l = 0;
+   
+
+    for(int i=0;i<size;i++)
+	{
+	    names_vector[i]=0;
+	    visit[i] = (array_dfs[i]/2);
+	    names_vector[i]=i;
+        //visited[i]=degree;
+	cout << "visit[" << i << "] :" << visit[i] <<endl;
+} 
+    for(int i=0;i<size;i++)
+	{
+    		visit[0]++;
+    		cout << "visit[" << i << "] :" << visit[i] <<endl;
+}
+
+    for(int i = 0; i < 10; i++)    
+    {
+	for(int j = 0; j < 10; j++)
+	{
+	l = l + adj[i][j];
+
+}
+}
+
+int length_line = 0;
+length_line = l/2;
+
+
+    cout << "length_line : " << length_line << endl;
+
+
+    DFS(0, length_line, visit, adj, names, /*outpath,*/ size);
+
+    for(int i = 0; i < outpath.size(); i++)
+    {
+	cout << outpath[i];
+	//fgetc(stdin);   //pause
+}
+
+
+/*    
+    for(int k=0;k<n;k++)
+   {
+        cout << "visited[" << k << "] :" << visited[k] << endl;
+	if (visited[k] == 1)
+	cnt_dfs++;
+	
+}
+*/
+    cout <<endl;
+    cout << "adj matrix DFS : " << endl;    // adj. matrix
+    for(int i = 0; i < 10; i++)    
+    {
+	for(int j = 0; j < 10; j++)
+	{
+	cout << adj[i][j] << " ";
+}
+	cout << endl;
+}
+
+
+
 
 	//-------------------------path--------------------------//
 
