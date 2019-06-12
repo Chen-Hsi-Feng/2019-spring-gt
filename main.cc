@@ -179,12 +179,12 @@ void DFS (int s, int l, int visit[], int adj[][10], string names[], int size)
 			adj[i][s]--;
 			
 			outpath.push_back(names[i]);
-
+/*
 			for (int k = 0; k < outpath.size(); k++)
 			cout << outpath[k] << " " ;
 			//fgetc(stdin);   //pause
 			cout << endl;
-
+*/
 			l--;
 			
 			if (l > 0)
@@ -890,9 +890,19 @@ length_line = l/2;
 
     DFS(0, length_line, visit, adj, names, /*outpath,*/ size);
 
+stdout = fopen("RESULT.txt", "w");  // write file
+
+	cout << "a" << " ";
+	fprintf(stdout,"a");
+
+char result[100];
+
     for(int i = 0; i < outpath.size(); i++)
-    {
-	cout << outpath[i];
+    {	
+	//result[i] = outpath[i];
+	//cout << result[i] << " ";
+	cout << outpath[i] << " ";
+	fprintf(stdout, outpath[i].c_str());
 	//fgetc(stdin);   //pause
 }
 
