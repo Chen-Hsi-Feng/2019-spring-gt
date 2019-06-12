@@ -213,7 +213,7 @@ void DFS (int s, int l, int visit[], int adj[][10], string names[], int size)
 int main(int argc, char** argv){
 
     /* start your program */
-    nm->interpret("./topo.txt");
+    nm->interpret("./topo_4points.txt");
 //    nm->print_all_e();
 //    nm->print_all_v();
     Vertex *list =  nm->get_all_nodes();
