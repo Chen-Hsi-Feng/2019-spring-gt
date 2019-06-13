@@ -1,1 +1,1 @@
-a b d f b f c f e f a 
+a b c d e f a 

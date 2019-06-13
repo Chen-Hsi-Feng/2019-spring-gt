@@ -38,34 +38,34 @@ void Dijkstra(int adj[n][n], int _n, int s, int d, int path[])
 	parent[s] = minus_1; 
 
 	
-	for (i = 0; i < n; i++) 
-		distance[i] = INFINITY; 
+for (i = 0; i < n; i++) 
+	distance[i] = INFINITY; 
 
-	distance[s] = 0; 
-	for (count = 0; count < n - 1; count++) { 
-		u = Min_d(distance, Blackened); 
+distance[s] = 0; 
+for (count = 0; count < n - 1; count++) { 
+	u = Min_d(distance, Blackened); 
 
-		if (u == INFINITY) 
-			break; 
-		else { 
+	if (u == INFINITY) 
+		break; 
+	else { 
 
 		
-			Blackened[u] = 1; 
-			for (v = 0; v < n; v++) { 
-				if (Blackened[v] == 0 && adj[u][v] && distance[u] + adj[u][v] < distance[v]) 
-				{ 
-					parent[v] = u; 
-					pathlength[v] = pathlength[parent[v]] + 1; 
-					distance[v] = distance[u] + adj[u][v]; 
-				} 
-				else if (Blackened[v]  == 0 && adj[u][v] && distance[u] + adj[u][v] == distance[v] && pathlength[u] + 1 < pathlength[v]) 
-				{ 
-					parent[v] = u; 
-					pathlength[v] = pathlength[u] + 1; 
-				} 
+		Blackened[u] = 1; 
+		for (v = 0; v < n; v++) { 
+			if (Blackened[v] == 0 && adj[u][v] && distance[u] + adj[u][v] < distance[v]) 
+			{ 
+				parent[v] = u; 
+				pathlength[v] = pathlength[parent[v]] + 1; 
+				distance[v] = distance[u] + adj[u][v]; 
+			} 
+			else if (Blackened[v]  == 0 && adj[u][v] && distance[u] + adj[u][v] == distance[v] && pathlength[u] + 1 < pathlength[v]) 
+			{ 
+				parent[v] = u; 
+				pathlength[v] = pathlength[u] + 1; 
 			} 
 		} 
 	} 
+} 
 
 	
 	if (distance[d] != INFINITY) 
@@ -83,10 +83,10 @@ void Dijkstra(int adj[n][n], int _n, int s, int d, int path[])
 int Min_d(int distance[], int Blackened[]) 
 { 
 	int min = INFINITY, min_index, v; 
-	for (v = 0; v < n; v++) 
-		if (Blackened[v] == 0 && distance[v] < min) { 
-			min = distance[v]; 
-			min_index = v; 
+for (v = 0; v < n; v++) 
+	if (Blackened[v] == 0 && distance[v] < min) { 
+		min = distance[v]; 
+		min_index = v; 
 		} 
 	
 	if (min == INFINITY)
@@ -128,37 +128,37 @@ void DFS (int s, int len, int visit[], int adj[][10], string names[], int size)
 	{
 		if (adj[s][i] != 0 && visit[i] != 0)
 		{
-			adj[s][i]--;
-			adj[i][s]--;
-			
-			outpath.push_back(names[i]);
+		adj[s][i]--;
+		adj[i][s]--;
+		
+		outpath.push_back(names[i]);
 /*
 			for (int k = 0; k < outpath.size(); k++)
 			cout << outpath[k] << " " ;
 			//fgetc(stdin);   //pause
 			cout << endl;
 */
-			len--;
+		len--;
 			
-			if (len > 0)
-			{
-				DFS(i, len, visit, adj, names, size);
+		if (len > 0)
+		{
+			DFS(i, len, visit, adj, names, size);
 				
-			}
-			else if (i == 0)
-			{
-				ok = 1;
-				return;
-			}
+		}
+		else if (i == 0)
+		{
+			ok = 1;
+			return;
+		}
 			
-			if (ok == 1)  return;
+		if (ok == 1)  return;
 			
-			len++;
-			visit[i]++;
-			outpath.pop_back();
-			adj[s][i]++;
-			adj[i][s]++;
-		}	
+		len++;
+		visit[i]++;
+		outpath.pop_back();
+		adj[s][i]++;
+		adj[i][s]++;
+	}	
 	}
 }
 
@@ -166,7 +166,7 @@ void DFS (int s, int len, int visit[], int adj[][10], string names[], int size)
 int main(int argc, char** argv){
 
     /* start your program */
-    nm->interpret("./topo_4points.txt");
+    nm->interpret("./topo_0points.txt");
 //    nm->print_all_e();
 //    nm->print_all_v();
     Vertex *list =  nm->get_all_nodes();
