@@ -166,7 +166,7 @@ void DFS (int s, int len, int visit[], int adj[][10], string names[], int size)
 int main(int argc, char** argv){
 
     /* start your program */
-    nm->interpret("./topo_6points.txt");
+    nm->interpret("./topo_4points.txt");
 //    nm->print_all_e();
 //    nm->print_all_v();
     Vertex *list =  nm->get_all_nodes();
@@ -312,8 +312,9 @@ int start = 99;
 int endline = 99;
 int min_length_array[10] = {99, 99, 99, 99, 99, 99, 99, 99, 99, 99};
 int path[10] = {99, 99, 99, 99, 99, 99, 99, 99, 99, 99};
+int number = 6;
 
-while (test != 0)
+while (number != 0)
 {
     for (int i = 0; i < 10; i++)
     path[i] = 99;
@@ -323,39 +324,40 @@ while (test != 0)
     int index_end   = 0;
     int start_done = 0;
     int end_done = 0;
+    //int number = 6;
     
-
-    while (start_done == 0)
-    {	
-	
-	if (record_points[index_start] == 1)
+    
+	if (number == 6)
 	{
-	start = odd[index_start];
-	start_done = 1;
+	start = odd[0];
+	endline = odd[1];	
 }
-	else
-	index_start++;
-}
-	cout << "index_start : " << index_start << endl;
-	
-	cout << "start : " << start << endl;
-
-	index_end = index_start + 1;
-
-    while (end_done == 0)
-    {	
-	
-	if (record_points[index_end] == 1)
+	else if (number == 5)
 	{
-	endline = odd[index_end];
-	end_done = 1;
+	start = odd[0];
+	endline = odd[2];	
 }
-	else
-	index_end++;
+	else if (number == 4)
+	{
+	start = odd[0];
+	endline = odd[3];	
 }
-	record[index_end] = 0;
-	cout << "index_end : " << index_end << endl;
-	cout << "endline : " << endline << endl;
+	else if (number == 3)
+	{
+	start = odd[1];
+	endline = odd[2];	
+}
+	else if (number == 2)
+	{
+	start = odd[1];
+	endline = odd[3];	
+}
+	else if (number == 1)
+	{
+	start = odd[2];
+	endline = odd[3];	
+}
+	
 
 	Dijkstra(adj, n, start, endline, path); 
 	
@@ -394,6 +396,7 @@ while (test != 0)
 }
 	cnt++;
 	cout << "cnt : " << cnt << endl;
+	number--;
 }  // while end
 
 	int min = 99;
@@ -443,6 +446,30 @@ while (test != 0)
 	endline1 = odd[3];	
 	start2 = odd[1];
 	endline2 = odd[2];
+	//cout << "min_index : " << min_index << endl;
+}	
+	else if (min_index == 3)	
+	{
+	start1 = odd[1];
+	endline1 = odd[2];	
+	start2 = odd[0];
+	endline2 = odd[3];
+	//cout << "min_index : " << min_index << endl;
+}	
+	else if (min_index == 4)	
+	{
+	start1 = odd[1];
+	endline1 = odd[3];	
+	start2 = odd[0];
+	endline2 = odd[2];
+	//cout << "min_index : " << min_index << endl;
+}	
+	else if (min_index == 5)	
+	{
+	start1 = odd[2];
+	endline1 = odd[3];	
+	start2 = odd[0];
+	endline2 = odd[1];
 	//cout << "min_index : " << min_index << endl;
 }	
 
