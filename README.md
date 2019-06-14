@@ -1,82 +1,101 @@
-# Graph-Theory-Project-Template
-Project template of course - Graph Theory (EE6622E) in National Cheng Kung University.
+# Chinese Postman Problem Report
+姓名：陳錫峰
+學號：N26074922
 
-## How to run
+## 如何編譯
+  在根目錄下執行下列指令
+  $ make && ./main.out
+  即可在終端機中看到執行結果
+  並在產生出的RESULT.txt中看到路徑答案
 
-### Linux
+
+### 程式設定
 
 ```
-# clone first (with submodule)
-$ git clone --recursive https://github.com/<your-name>/Graph-Theory-Project-Template.git
-# (Option) build libfakemn.a
-$ cd fake-mininet && make lib && cd .. && cp fake-mininet/libfakemn.a .
-# build
-$ make 
-# run 
-$ ./main.out
+
+　我這次實作的中國郵差問題是使用"無向圖"且"無權重"的版本
+  且由於題目沒有設定輸入點的個數
+  因此我的程式設定為僅能最多接受10個點
+  並且只需在topo.txt中設定其中一條邊
+  我即會在程式中將另一條邊補上定義為無向圖
+  因此只須定義一條邊即可  (ex. a b 1 1)
+  至於capacity以及flow在此程式中沒有使用到，因此可以隨意給值
+
 ```
 
-### Windows
+#### 解題思路：
 
-If your PC is `window 10`, then you need to install the related dependencies. For example, if you are using `VSCode` as your IDE, then you can install the plugin of `C/C++` in your vscode. And then install the following programs/packages:
-* mingw
-* git
-
-Step by step to create `c_cpp_properties.json` and `tasks.json`:
-* `Ctrl+Shift+P` -> `C/C++: Edit Configuration` -> then you have the first JSON file.
-* `Ctrl+Shift+P` -> `Tasks: Configure Task` -> then you have the second JSON file.
-
-Here is the setting of `c_cpp_properties.json` and `tasks.json`:
-```json
-# c_cpp_properties.json (If your mingw installed in another folder, then you have to change the value in `compilterPath`)
-{
-    "configurations": [
-        {
-            "name": "MinGW",
-            "intelliSenseMode": "gcc-x64",
-            "includePath": [
-                "$(workspaceFolder)"
-            ],
-            "compilerPath": "C:/mingw/bin/gcc.exe",
-            "cStandard": "c11",
-            "cppStandard": "c++11"
-        }
-    ],
-    "version": 4
-}
-
-# tasks.json
-{
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "build",
-            "type": "shell",
-            "command": "g++",
-            "args": [
-                "-g",
-                "main.cc",
-                "-o",
-                "main.exe",
-                "-Ifake-mininet/lib",
-                "-g3",
-                "-L.",
-                "-lfakemn_win",
-                "-std=c++11"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        }
-    ]
-}
 ```
 
-After all the settings have been done, we can press `Ctrl+Shift+B` to run the task, if your settings is correct, then there will have an executable file which named `main.exe`.
+  1. 利用助教的interpret API將圖用txt檔描述好並輸入
+  2. 再使用connected API判斷兩點之間是否連線來建立adjacency matrix
+  3. 利用建立好的adjacency matrix來判斷哪些點的order為奇數
+  4. 利用"Dijkstra演算法將距離總和最短的配對組合求出來
+  5. 將配對的奇數點補邊並更新adjacency matrix完成尤拉圖
+  6. 利用DFS演算法將已經更新的adjacency matrix路徑走完
 
-Or you can just [DOWNLOAD a pre-built VM images](http://gofile.me/39GpL/XU5tznyO6) provided by TA.
+  上述6點為我的主要解題思路，下面會對於上述六點做更細節的解釋
 
-> [Guide of environment setting](https://hackmd.io/-5WZQC-1QqOeV3KUX65tEw?view) on Windows.
+```
 
-## TODO - Your descriptions about solutions/algorithms/results
+##### 程式實作
+
+```
+
+  此次的中國郵差問題要求為需要走過圖中所有的邊至少一次且要求路徑為最短
+  因此在程式一開始將圖藉由API輸入至程式之後，我會將奇數order的點找出來
+  之所以要找奇數order點的原因是，如果一張圖中所有點的order皆為偶數
+  此圖稱為尤拉圖，在尤拉圖中一定可以找到一個迴路將所有點都經過一次並且回到原點
+  因此若輸入圖本身不是尤拉圖，首先我會先將她補成尤拉圖
+  因為奇數order的邊基於degree-sum formula會成對出現
+  因此找尋奇數點之間的最短路徑以及長度是補圖的必要工作
+  我找尋最短路徑的方法是使用"Dijkstra's algorithm"
+  此演算法可以用來找尋兩點之間的最短路徑
+  我從網路上參考了此演算法並做了一些修改
+  因為原先我參考的Dijkstra's algorithm程式僅有最短長度
+  我加上了最短的路徑的trace，因此我可以找到最短的路徑並存進陣列中
+  藉由此演算法最短路徑的找尋，我就可以將最短的奇數點配對並對其進行補邊
+  如此一來就能得到補完邊後整體長度最短的尤拉圖
+  在得到尤拉圖之後，我會進行尤拉回路的尋找
+  尤拉回路的尋找我是利用DFS，"深度優先搜尋演算法"
+  並且將路徑print出來且寫至檔案中完成流程。
+
+```       
+                                                  
+###### 執行結果
+
+```                                                 
+                                                     -----
+                                                    /     \
+  以我在github上的例子舉例，輸入一個總數6個點       a------f-----c
+  奇數order點為4個點的圖(如右圖)，完成DFS之後       |    //|\\
+  會由起點"a"開始走並走完所有邊將結果輸出如下       |   // | \\
+  a b d f b f c f e f a                             |  //  |  \\
+  並最後把adjacency matrix輸出檢查是否皆為0         | //   |   \\
+  皆為0代表已將所有路徑走完。                       |//    |    \\
+                                                    b------d     e
+
+```
+
+####### BONUS
+
+```
+
+  在我實作此project時，在做關於interpret的雙向連接時發現了bug
+  經過與助教討論，確實是程式的bug
+
+```
+
+
+
+######## 參考連結
+
+```
+
+  [1]https://www.geeksforgeeks.org/dijkstras-shortest-path-with-minimum-edges/fbclid=IwAR2XtFJXYBbffodIMhqsxKuCJpPDiyf-8oOkY6aUtwtchnkAC_-10OevxNs
+  
+  [2]https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/
+
+```
+
+
